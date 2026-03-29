@@ -9,15 +9,15 @@ public enum UserRole
 
 public class User
 {
-  public Guid Id { get; private set; }
+  public Guid Id { get; set; }
 
-  public string Email { get; private set; } = default!;
+  public string Email { get; set; } = default!;
 
-  public string PasswordHash { get; private set; } = default!;
+  public string PasswordHash { get; set; } = default!;
 
-  public string FirstName { get; private set; } = default!;
+  public string FirstName { get; set; } = default!;
 
-  public string LastName { get; private set; } = default!;
+  public string LastName { get; set; } = default!;
 
   public UserRole Role { get; private set; }
 

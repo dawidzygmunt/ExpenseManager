@@ -1,8 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "SCLRnNMl0TU=",
+  "dgSpecHash": "wk0lZTh1OiA=",
   "success": true,
-  "projectFilePath": "/home/dzygmunt/dev/ExpensesManager.Api/ExpensesManager.Domain/ExpensesManager.Domain.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "/Users/gosu/RiderProjects/ExpenseManager/ExpensesManager.Domain/ExpensesManager.Domain.csproj",
+  "expectedPackageFiles": [
+    "/Users/gosu/.nuget/packages/microsoft.extensions.apidescription.server/10.0.0/microsoft.extensions.apidescription.server.10.0.0.nupkg.sha512",
+    "/Users/gosu/.nuget/packages/microsoft.openapi/2.4.1/microsoft.openapi.2.4.1.nupkg.sha512",
+    "/Users/gosu/.nuget/packages/swashbuckle.aspnetcore/10.1.7/swashbuckle.aspnetcore.10.1.7.nupkg.sha512",
+    "/Users/gosu/.nuget/packages/swashbuckle.aspnetcore.swagger/10.1.7/swashbuckle.aspnetcore.swagger.10.1.7.nupkg.sha512",
+    "/Users/gosu/.nuget/packages/swashbuckle.aspnetcore.swaggergen/10.1.7/swashbuckle.aspnetcore.swaggergen.10.1.7.nupkg.sha512",
+    "/Users/gosu/.nuget/packages/swashbuckle.aspnetcore.swaggerui/10.1.7/swashbuckle.aspnetcore.swaggerui.10.1.7.nupkg.sha512"
+  ],
   "logs": []
 }

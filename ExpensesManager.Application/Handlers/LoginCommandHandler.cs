@@ -1,18 +1,42 @@
 using ExpensesManager.Application.Commands;
-using ExpensesManager.Application.Dto;
+using ExpensesManager.Application.Dtos;
 using ExpensesManager.Application.Responses;
 using ExpensesManager.Domain.Interfaces;
 using MediatR;
 
 namespace ExpensesManager.Application.Handlers;
 
-public class LoginCommandHandler(IJwtService jwtService) : IRequestHandler<LoginCommand, LoginResponse>
+public class LoginCommandHandler(
+    IJwtService jwtService,
+    IUserRepository userRepository,
+    IPasswordHasher passwordHasher
+) : IRequestHandler<LoginCommand, LoginResponse>
 {
-  private readonly IUserRepository _userRepository;
-  private readonly ITokenService _tokenService;
+    public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
+    {
+        var user = await userRepository.GetByEmailAsync(request.Email);
 
-  public Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
-  {
-    // Get user from db, and verify hashed passw
-  }
+        if (user is null)
+        {
+            throw new UnauthorizedAccessException("Invalid credentials");
+        }
+
+        var isPasswordValid = passwordHasher.Verify(request.Password, user.PasswordHash);
+
+        if (!isPasswordValid)
+        {
+            throw new UnauthorizedAccessException("Invalid credentials");
+        }
+
+        var roles = new List<string>();
+        var token = jwtService.GenerateAccessToken(user, roles);
+
+        var userDto = new UserDto(
+            user.Id,
+            user.Email,
+            user.FirstName,
+            user.LastName);
+        
+        return new LoginResponse(token, userDto);
+    }
 }

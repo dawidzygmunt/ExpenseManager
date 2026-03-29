@@ -1,0 +1,13 @@
+/Users/gosu/RiderProjects/ExpenseManager/ExpensesManager.Domain/bin/Debug/net10.0/ExpensesManager.Domain.deps.json
+/Users/gosu/RiderProjects/ExpenseManager/ExpensesManager.Domain/bin/Debug/net10.0/ExpensesManager.Domain.dll
+/Users/gosu/RiderProjects/ExpenseManager/ExpensesManager.Domain/bin/Debug/net10.0/ExpensesManager.Domain.pdb
+/Users/gosu/RiderProjects/ExpenseManager/ExpensesManager.Domain/obj/Debug/net10.0/ExpensesManager.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/gosu/RiderProjects/ExpenseManager/ExpensesManager.Domain/obj/Debug/net10.0/ExpensesManager.Domain.AssemblyInfoInputs.cache
+/Users/gosu/RiderProjects/ExpenseManager/ExpensesManager.Domain/obj/Debug/net10.0/ExpensesManager.Domain.AssemblyInfo.cs
+/Users/gosu/RiderProjects/ExpenseManager/ExpensesManager.Domain/obj/Debug/net10.0/ExpensesManager.Domain.csproj.CoreCompileInputs.cache
+/Users/gosu/RiderProjects/ExpenseManager/ExpensesManager.Domain/obj/Debug/net10.0/ExpensesManager.Domain.sourcelink.json
+/Users/gosu/RiderProjects/ExpenseManager/ExpensesManager.Domain/obj/Debug/net10.0/ExpensesManager.Domain.dll
+/Users/gosu/RiderProjects/ExpenseManager/ExpensesManager.Domain/obj/Debug/net10.0/refint/ExpensesManager.Domain.dll
+/Users/gosu/RiderProjects/ExpenseManager/ExpensesManager.Domain/obj/Debug/net10.0/ExpensesManager.Domain.pdb
+/Users/gosu/RiderProjects/ExpenseManager/ExpensesManager.Domain/obj/Debug/net10.0/ref/ExpensesManager.Domain.dll
+/Users/gosu/RiderProjects/ExpenseManager/ExpensesManager.Domain/obj/Debug/net10.0/ExpensesManager.Domain.csproj.AssemblyReference.cache
