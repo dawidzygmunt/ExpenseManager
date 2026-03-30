@@ -17,8 +17,15 @@ public class MockUserRepository : IUserRepository
         };
 
         if (email == fakeUser.Email)
+        {
             return Task.FromResult<User?>(fakeUser);
+        }
 
         return Task.FromResult<User?>(null);
+    }
+
+    public Task<User> AddAsync(User user)
+    {
+        return Task.FromResult(user);
     }
 }

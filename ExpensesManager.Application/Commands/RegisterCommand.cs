@@ -3,6 +3,6 @@ using MediatR;
 
 namespace ExpensesManager.Application.Commands;
 
-public sealed record LoginCommand(
+public sealed record RegisterCommand(
     string Email,
-    string Password) : IRequest<LoginResponse>;
+    string Password) : IRequest<RegisterResponse>;

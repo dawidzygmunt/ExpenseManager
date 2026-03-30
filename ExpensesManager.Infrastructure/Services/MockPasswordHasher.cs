@@ -10,4 +10,9 @@ public class MockPasswordHasher: IPasswordHasher
     {
         return true;
     }
+
+    public string Hash(string password)
+    {
+        return $"Mocked-hash-{password}";
+    }
 }

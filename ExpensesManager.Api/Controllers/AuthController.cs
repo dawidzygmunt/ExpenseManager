@@ -18,5 +18,13 @@ namespace ExpensesManager.Api.Controllers
       return Ok(response);
     }
 
+    [HttpPost("register")]
+    public async Task<IActionResult> RegisterEndpoint([FromBody] RegisterRequest request)
+    {
+      var command = new RegisterCommand(request.Email, request.Password);
+      var response = await mediator.Send(command);
+      return Ok(response);
+    }
   }
+  
 }
