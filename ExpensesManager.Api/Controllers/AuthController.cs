@@ -1,8 +1,8 @@
 using ExpensesManager.Application.Commands;
-using ExpensesManager.Application.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using LoginRequest = ExpensesManager.Api.DTO.LoginRequest;
 
 namespace ExpensesManager.Api.Controllers
 {
@@ -23,6 +23,18 @@ namespace ExpensesManager.Api.Controllers
     {
       var command = new RegisterCommand(request.Email, request.Password);
       var response = await mediator.Send(command);
+      return Ok(response);
+    }
+
+    [HttpPost("logout")]
+    public async Task<IActionResult> LogoutEndpoint()
+    {
+      var accessToken = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+      var command = new LogoutCommand(accessToken);
+      var response = await mediator.Send(command);
+      
+      Response.Cookies.Delete("refreshToken");
+
       return Ok(response);
     }
   }
