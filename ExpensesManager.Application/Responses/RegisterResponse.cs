@@ -1,4 +1,4 @@
-using ExpensesManager.Application.Dtos;
+using ExpensesManager.Application.DTOs;
 
 namespace ExpensesManager.Application.Responses;
 
