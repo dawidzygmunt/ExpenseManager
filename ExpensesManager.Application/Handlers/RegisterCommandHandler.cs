@@ -1,5 +1,5 @@
 using ExpensesManager.Application.Commands;
-using ExpensesManager.Application.Dtos;
+using ExpensesManager.Application.DTOs;
 using ExpensesManager.Application.Responses;
 using ExpensesManager.Domain.Entities;
 using ExpensesManager.Domain.Interfaces;

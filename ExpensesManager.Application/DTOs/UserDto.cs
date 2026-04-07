@@ -1,5 +1,5 @@
 
-namespace ExpensesManager.Application.Dtos;
+namespace ExpensesManager.Application.DTOs;
 
 public sealed record UserDto(
   Guid Id,
