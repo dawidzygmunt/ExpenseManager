@@ -6,4 +6,5 @@ public interface IBlackListRepository
 {
     Task AddAsync(BlackListedToken token);
     Task<bool> IsBlacklistedAsync(string jti);
+    Task RemoveExpiredAsync();
 }

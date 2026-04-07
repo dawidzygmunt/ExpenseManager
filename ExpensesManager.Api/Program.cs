@@ -25,6 +25,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPasswordHasher, MockPasswordHasher>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IBlackListRepository, BlackListRepository>();
+builder.Services.AddHostedService<JwtBlackListCleanupService>();
+
 
 builder.Services.AddSwaggerGen();
 
