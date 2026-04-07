@@ -17,4 +17,9 @@ public class BlackListRepository(AppDbContext dbContext) : IBlackListRepository
     {
         return await dbContext.BlackListedTokens.AnyAsync(u => u.Jti == jti);
     }
+
+    public async Task RemoveExpiredAsync()
+    {
+        await dbContext.BlackListedTokens.Where(t => t.Expiry < DateTime.UtcNow).ExecuteDeleteAsync();
+    }
 }
