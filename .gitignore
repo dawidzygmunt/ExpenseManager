@@ -1,0 +1,20 @@
+# .NET build outputs
+bin/
+obj/
+out/
+
+# Rider / JetBrains
+.idea/
+*.sln.DotSettings.user
+*.user
+
+# Visual Studio
+.vs/
+*.suo
+*.userprefs
+
+# macOS
+.DS_Store
+
+# Logs
+*.log

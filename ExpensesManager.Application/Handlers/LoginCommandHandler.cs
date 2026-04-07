@@ -1,7 +1,8 @@
 using ExpensesManager.Application.Commands;
-using ExpensesManager.Application.Dtos;
+using ExpensesManager.Application.DTOs;
 using ExpensesManager.Application.Responses;
 using ExpensesManager.Domain.Interfaces;
+using ExpensesManager.Infrastructure.Interfaces;
 using MediatR;
 
 namespace ExpensesManager.Application.Handlers;
@@ -29,7 +30,8 @@ public class LoginCommandHandler(
         }
 
         var roles = new List<string>();
-        var token = jwtService.GenerateAccessToken(user, roles);
+        var accessToken = jwtService.GenerateAccessToken(user, roles);
+        var refreshToken = jwtService.GenerateRefreshToken();
 
         var userDto = new UserDto(
             user.Id,
@@ -37,6 +39,6 @@ public class LoginCommandHandler(
             user.FirstName,
             user.LastName);
         
-        return new LoginResponse(token, userDto);
+        return new LoginResponse(accessToken, refreshToken, userDto);
     }
 }
