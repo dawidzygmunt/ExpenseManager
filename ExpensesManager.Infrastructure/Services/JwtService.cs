@@ -53,7 +53,7 @@ public class JwtService(IOptions<JwtSettings> jwtSettings) : IJwtService
     public RefreshToken GenerateRefreshToken()
     {
         var randomNumber = new byte [128];
-        var refreshTokenExpiresDate = DateTime.UtcNow.AddMinutes(jwtSettings.Value.RefreshTokenExpirationDays);
+        var refreshTokenExpiresDate = DateTime.UtcNow.AddDays(jwtSettings.Value.RefreshTokenExpirationDays);
 
         using (var rng = RandomNumberGenerator.Create())
         {
