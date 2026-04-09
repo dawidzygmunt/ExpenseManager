@@ -5,4 +5,6 @@ namespace ExpensesManager.Application.Commands;
 
 public sealed record RegisterCommand(
     string Email,
-    string Password) : IRequest<RegisterResponse>;
+    string Password,
+    string FirstName,
+    string LastName) : IRequest<RegisterResponse>;

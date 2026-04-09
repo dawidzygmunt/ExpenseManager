@@ -5,11 +5,11 @@ using ExpensesManager.Domain.Entities;
 using ExpensesManager.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 
 namespace ExpensesManager.Application.Handlers;
 
 public class RegisterCommandHandler(
-    IPasswordHasher passwordHasher,
     IUserRepository userRepository
 ) : IRequestHandler<RegisterCommand, RegisterResponse>
 {
@@ -20,21 +20,20 @@ public class RegisterCommandHandler(
         {
             throw new Exception("User with this email already exists");
         }
-
-        var hashedPassword = passwordHasher.Hash(request.Password);
+        
         var user = new User
         {
             Id = Guid.NewGuid(),
             Email = request.Email,
-            FirstName = "xd",
-            LastName = "xd",
-            PasswordHash = hashedPassword,
+            UserName = request.Email,
+            FirstName = request.FirstName,
+            LastName = request.LastName,
         };
-        var newUser = await userRepository.AddAsync(user);
+        var newUser = await userRepository.AddAsync(user, request.Password);
 
         var userDto = new UserDto(
-            Guid.NewGuid(),
-            newUser.Email,
+            newUser.Id,
+            newUser.Email!,
             newUser.FirstName,
             newUser.LastName);
 

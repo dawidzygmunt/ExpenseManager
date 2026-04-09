@@ -1,6 +1,7 @@
+using ExpensesManager.Api.DTO;
 using ExpensesManager.Application.Commands;
 using MediatR;
-using Microsoft.AspNetCore.Identity.Data;
+
 using Microsoft.AspNetCore.Mvc;
 using LoginRequest = ExpensesManager.Api.DTO.LoginRequest;
 
@@ -21,7 +22,7 @@ namespace ExpensesManager.Api.Controllers
     [HttpPost("register")]
     public async Task<IActionResult> RegisterEndpoint([FromBody] RegisterRequest request)
     {
-      var command = new RegisterCommand(request.Email, request.Password);
+      var command = new RegisterCommand(request.Email, request.Password, request.FirstName, request.LastName);
       var response = await mediator.Send(command);
       return Ok(response);
     }

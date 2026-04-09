@@ -9,8 +9,7 @@ namespace ExpensesManager.Application.Handlers;
 
 public class LoginCommandHandler(
     IJwtService jwtService,
-    IUserRepository userRepository,
-    IPasswordHasher passwordHasher
+    IUserRepository userRepository
 ) : IRequestHandler<LoginCommand, LoginResponse>
 {
     public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -22,13 +21,14 @@ public class LoginCommandHandler(
             throw new UnauthorizedAccessException("Invalid credentials");
         }
 
-        var isPasswordValid = passwordHasher.Verify(request.Password, user.PasswordHash);
+        var isPasswordValid = await userRepository.CheckPasswordAsync(user, request.Password);
 
         if (!isPasswordValid)
         {
             throw new UnauthorizedAccessException("Invalid credentials");
         }
 
+        // TODO: Replace with ASP entity
         var roles = new List<string>();
         var accessToken = jwtService.GenerateAccessToken(user, roles);
         var refreshToken = jwtService.GenerateRefreshToken();
