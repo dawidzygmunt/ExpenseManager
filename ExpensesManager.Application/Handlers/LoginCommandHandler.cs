@@ -29,8 +29,7 @@ public class LoginCommandHandler(
         }
 
         // TODO: Replace with ASP entity
-        var roles = new List<string>();
-        var accessToken = jwtService.GenerateAccessToken(user, roles);
+        var accessToken = jwtService.GenerateAccessToken(user);
         var refreshToken = jwtService.GenerateRefreshToken();
 
         var userDto = new UserDto(
