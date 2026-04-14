@@ -1,11 +1,11 @@
 using ExpensesManager.Application.Handlers;
+using ExpensesManager.Application.Interfaces;
 using ExpensesManager.Domain.Entities;
 using ExpensesManager.Domain.Interfaces;
 using ExpensesManager.Infrastructure.Services;
 using ExpensesManager.Infrastructure.Settings;
 using ExpensesManager.Infrastructure.Repositories;
 using ExpensesManager.Infrastructure.Data;
-using ExpensesManager.Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
