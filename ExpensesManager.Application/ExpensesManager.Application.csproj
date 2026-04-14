@@ -16,7 +16,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\ExpensesManager.Domain\ExpensesManager.Domain.csproj" />
-        <ProjectReference Include="..\ExpensesManager.Infrastructure\ExpensesManager.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

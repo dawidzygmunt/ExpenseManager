@@ -1,8 +1,8 @@
 using ExpensesManager.Application.Commands;
 using ExpensesManager.Application.DTOs;
+using ExpensesManager.Application.Interfaces;
 using ExpensesManager.Application.Responses;
 using ExpensesManager.Domain.Interfaces;
-using ExpensesManager.Infrastructure.Interfaces;
 using MediatR;
 
 namespace ExpensesManager.Application.Handlers;

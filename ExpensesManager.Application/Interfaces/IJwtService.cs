@@ -1,7 +1,6 @@
 using ExpensesManager.Domain.Entities;
-using ExpensesManager.Infrastructure.Settings;
 
-namespace ExpensesManager.Infrastructure.Interfaces;
+namespace ExpensesManager.Application.Interfaces;
 
 public interface IJwtService
 {
