@@ -1,9 +1,9 @@
 using ExpensesManager.Application.Commands;
 using ExpensesManager.Application.Handlers;
+using ExpensesManager.Application.Interfaces;
 using ExpensesManager.Application.Responses;
 using ExpensesManager.Domain.Entities;
 using ExpensesManager.Domain.Interfaces;
-using ExpensesManager.Infrastructure.Interfaces;
 using Moq;
 
 namespace ExpensesManager.Api.UnitTest.Handlers;
@@ -64,18 +64,28 @@ public class LoginCommandHandlerTests
             LastName = "mockedLastName",
             PasswordHash = "mockedHashedPassword"
         };
+        var roles = new List<string> { "User" };
         const string mockedAccessToken = "mockedAccessToken";
+        var mockedRefreshToken = new RefreshToken
+        {
+            Token =  "mockedRefreshToken",
+            ExpiryTime = DateTime.Now.AddMinutes(5),
+        };
 
         _userRepository.Setup(x => x.GetByEmailAsync(request.Email)).ReturnsAsync(user);
         _userRepository.Setup(x => x.CheckPasswordAsync(
             user, request.Password)).ReturnsAsync(true);
+        _userRepository.Setup(x=> x.GetRolesAsync(user)).ReturnsAsync(roles);
 
-        _jwtService.Setup(x => x.GenerateAccessToken(user)).Returns(mockedAccessToken);
+        _jwtService.Setup(x => x.GenerateAccessToken(user, roles)).Returns(mockedAccessToken);
+        _jwtService.Setup(x => x.GenerateRefreshToken()).Returns(mockedRefreshToken);
 
         // Act
         var response = await _sut.Handle(request, CancellationToken.None);
         
         // Assert
         Assert.Equal(mockedAccessToken, response.AccessToken);
+        Assert.Equal(mockedRefreshToken.Token, response.RefreshToken);
+        Assert.Equal(mockedRefreshToken.ExpiryTime, response.RefreshTokenExpiryTime);
     }
 }
