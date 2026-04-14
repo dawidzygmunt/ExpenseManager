@@ -27,11 +27,10 @@ public class LoginCommandHandler(
         {
             throw new UnauthorizedAccessException("Invalid credentials");
         }
-        
+
         var roles = await userRepository.GetRolesAsync(user);
         var accessToken = jwtService.GenerateAccessToken(user, roles);
         var refreshToken = jwtService.GenerateRefreshToken();
-        
 
 
         var userDto = new UserDto(
@@ -39,7 +38,7 @@ public class LoginCommandHandler(
             user.Email,
             user.FirstName,
             user.LastName);
-        
-        return new LoginResponse(accessToken, refreshToken.Token, refreshToken.ExpiryTime,userDto);
+
+        return new LoginResponse(accessToken, refreshToken.Token, refreshToken.ExpiryTime, userDto);
     }
 }
