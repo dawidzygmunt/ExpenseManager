@@ -5,7 +5,7 @@ namespace ExpensesManager.Infrastructure.Interfaces;
 
 public interface IJwtService
 {
-    string GenerateAccessToken(User user, List<string> roles);
+    string GenerateAccessToken(User user, IList<string> roles);
     RefreshToken GenerateRefreshToken();
     (string jti, DateTime expiry) DecodeAccessToken(string accessToken);
 }

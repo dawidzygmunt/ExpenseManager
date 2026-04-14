@@ -27,11 +27,13 @@ public class LoginCommandHandler(
         {
             throw new UnauthorizedAccessException("Invalid credentials");
         }
-
+        
         // TODO: Replace with ASP entity
-        var roles = new List<string>();
+        var roles = await userRepository.GetRolesAsync(user);
         var accessToken = jwtService.GenerateAccessToken(user, roles);
         var refreshToken = jwtService.GenerateRefreshToken();
+        
+
 
         var userDto = new UserDto(
             user.Id,
