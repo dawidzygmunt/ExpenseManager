@@ -6,6 +6,7 @@ using ExpensesManager.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExpensesManager.Application.Handlers;
 
@@ -30,6 +31,7 @@ public class RegisterCommandHandler(
             LastName = request.LastName,
         };
         var newUser = await userRepository.AddAsync(user, request.Password);
+        
 
         var userDto = new UserDto(
             newUser.Id,

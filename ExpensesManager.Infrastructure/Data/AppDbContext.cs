@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 
+
 namespace ExpensesManager.Infrastructure.Data;
 
 public class AppDbContext : IdentityDbContext <User, IdentityRole<Guid>, Guid>
 {
+    
     public AppDbContext(DbContextOptions<AppDbContext> options) 
         : base(options)
     {
@@ -19,6 +21,10 @@ public class AppDbContext : IdentityDbContext <User, IdentityRole<Guid>, Guid>
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        
+        var adminRoleId = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
+        var userRoleId  = Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb");
+        
         base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<User>(entity =>
         {
@@ -36,5 +42,20 @@ public class AppDbContext : IdentityDbContext <User, IdentityRole<Guid>, Guid>
             entity.HasIndex(u => u.Jti).IsUnique();
             entity.Property(u => u.Expiry).IsRequired();
         });
+        
+        modelBuilder.Entity<IdentityRole<Guid>>().HasData(
+            new IdentityRole<Guid>
+            {
+                Id = adminRoleId,
+                Name = "Admin",
+                NormalizedName = "ADMIN"
+            },
+            new IdentityRole<Guid>
+            {
+                Id = userRoleId,
+                Name = "User",
+                NormalizedName = "USER"
+            }
+        );
     }
 }
