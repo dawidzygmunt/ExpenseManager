@@ -4,9 +4,6 @@ using ExpensesManager.Application.Responses;
 using ExpensesManager.Domain.Entities;
 using ExpensesManager.Domain.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace ExpensesManager.Application.Handlers;
 

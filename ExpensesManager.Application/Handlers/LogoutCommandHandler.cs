@@ -1,7 +1,7 @@
 using ExpensesManager.Application.Commands;
+using ExpensesManager.Application.Interfaces;
 using ExpensesManager.Domain.Entities;
 using ExpensesManager.Domain.Interfaces;
-using ExpensesManager.Infrastructure.Interfaces;
 using MediatR;
 
 
