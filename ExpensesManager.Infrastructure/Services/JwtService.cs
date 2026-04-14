@@ -12,7 +12,7 @@ namespace ExpensesManager.Infrastructure.Services;
 
 public class JwtService(IOptions<JwtSettings> jwtSettings) : IJwtService
 {
-    public string GenerateAccessToken(User user)
+    public string GenerateAccessToken(User user, IList<string> roles)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.UTF8.GetBytes(jwtSettings.Value.SecretKey);
@@ -26,6 +26,11 @@ public class JwtService(IOptions<JwtSettings> jwtSettings) : IJwtService
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(JwtRegisteredClaimNames.Jti, jti) // JWT ID for blacklisting
         };
+        
+        foreach (var role in roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, role));
+        }
 
         var expiresAt = DateTime.UtcNow.AddMinutes(jwtSettings.Value.AccessTokenExpirationMinutes);
 
