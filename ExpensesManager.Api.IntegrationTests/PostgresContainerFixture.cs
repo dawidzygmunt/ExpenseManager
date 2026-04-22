@@ -1,6 +1,23 @@
-namespace ExpensesManager.Api.IntegrationTests;
+using Testcontainers.PostgreSql;
 
-public class PostgresContainerFixture
+public sealed class PostgresContainerFixture : IAsyncLifetime
 {
-    
+    private readonly PostgreSqlContainer _container = new PostgreSqlBuilder()
+        .WithImage("postgres:16-alpine")
+        .WithDatabase("expensesmanager")
+        .WithUsername("postgres")
+        .WithPassword("postgres")
+        .Build();
+ 
+    public string ConnectionString => _container.GetConnectionString();
+ 
+    public async Task InitializeAsync()
+    {
+        await _container.StartAsync();
+    }
+ 
+    public async Task DisposeAsync()
+    {
+        await _container.DisposeAsync();
+    }
 }
