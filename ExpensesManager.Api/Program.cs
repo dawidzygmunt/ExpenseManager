@@ -1,14 +1,14 @@
+using ExpensesManager.Api.Middleware;
 using ExpensesManager.Application.Handlers;
 using ExpensesManager.Application.Interfaces;
 using ExpensesManager.Domain.Entities;
 using ExpensesManager.Domain.Interfaces;
+using ExpensesManager.Infrastructure.Data;
+using ExpensesManager.Infrastructure.Repositories;
 using ExpensesManager.Infrastructure.Services;
 using ExpensesManager.Infrastructure.Settings;
-using ExpensesManager.Infrastructure.Repositories;
-using ExpensesManager.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
@@ -65,6 +65,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseCors("AllowAll");
+app.UseMiddleware<JwtBlacklistMiddleware>();
 
 app.MapControllers();
 
