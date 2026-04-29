@@ -1,3 +1,4 @@
+using ExpensesManager.Api.Responses;
 using ExpensesManager.Application.Interfaces;
 using ExpensesManager.Domain.Interfaces;
 
@@ -57,8 +58,9 @@ public class JwtBlacklistMiddleware(RequestDelegate next)
 
     private static Task WriteUnauthorizedAsync(HttpContext context, string message)
     {
-        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+        var payload = ApiResponse.Failure(StatusCodes.Status401Unauthorized, message);
+        context.Response.StatusCode = payload.StatusCode;
         context.Response.ContentType = "application/json";
-        return context.Response.WriteAsJsonAsync(new { message });
+        return context.Response.WriteAsJsonAsync(payload);
     }
 }
