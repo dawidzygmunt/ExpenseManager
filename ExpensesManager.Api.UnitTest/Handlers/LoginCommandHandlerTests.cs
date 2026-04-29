@@ -89,4 +89,6 @@ public class LoginCommandHandlerTests
         Assert.Equal(mockedRefreshToken.ExpiryTime, response.RefreshTokenExpiryTime);
         _userRepository.Verify(x => x.GetRolesAsync(user), Times.Once);
     }
+    
 }
+

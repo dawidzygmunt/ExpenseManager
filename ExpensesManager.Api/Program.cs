@@ -43,6 +43,16 @@ builder.Services.AddIdentityCore<User>(options =>
     .AddRoles<IdentityRole<Guid>>()
     .AddEntityFrameworkStores<AppDbContext>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+        policy.SetIsOriginAllowed(x => true)
+            .AllowCredentials()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
+
+
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IBlackListRepository, BlackListRepository>();
 builder.Services.AddHostedService<JwtBlackListCleanupService>();
@@ -54,6 +64,7 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
+app.UseCors("AllowAll");
 
 app.MapControllers();
 
@@ -65,4 +76,6 @@ using (var scope = app.Services.CreateScope())
 
 app.Run();
 
-public partial class Program { }
+public partial class Program
+{
+}

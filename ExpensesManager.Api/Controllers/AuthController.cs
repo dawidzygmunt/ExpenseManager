@@ -24,7 +24,7 @@ namespace ExpensesManager.Api.Controllers
                 Expires = response.RefreshTokenExpiryTime
             });
 
-            return Ok(new { response.RefreshToken, response.UserDto });
+            return Ok(new { response.AccessToken, response.UserDto });
         }
 
         [HttpPost("register")]

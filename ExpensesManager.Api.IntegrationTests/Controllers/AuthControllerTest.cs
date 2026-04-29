@@ -16,9 +16,8 @@ public class AuthControllerTest: IClassFixture<PostgresContainerFixture>
     }
 
     [Fact]
-    public async Task AuthController_RegisterThenLogin_ReturnsOk()
+    public async Task AuthController_Register_ReturnsOk()
     {
-        
         // Arrange
         var request = new RegisterRequest("test@test.com", "TestPassword123", "John", "Doe");
 
@@ -27,6 +26,16 @@ public class AuthControllerTest: IClassFixture<PostgresContainerFixture>
         
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        
+    }
+
+    [Fact]
+    public async Task AuthController_Register_ReturnsWeakPassword()
+    {
+        // Arrange
+        var request = new RegisterRequest("test@test.com", "123", "John", "Doe");
+        // Act
+        var response = await _client.PostAsJsonAsync("/api/auth/register", request);
+        // Assert
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 }

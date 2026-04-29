@@ -14,6 +14,21 @@ public class LoginCommandHandler(
 {
     public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
+        if (string.IsNullOrWhiteSpace(request.Email))
+        {
+            throw new ArgumentException("Email is required", nameof(request.Email));
+        }
+
+        if (string.IsNullOrWhiteSpace(request.Password))
+        {
+            throw new ArgumentException("Password is required", nameof(request.Password));
+        }
+
+        if (request.Password.Length < 6)
+        {
+            throw new ArgumentException("Password is too short", nameof(request.Password));
+        }
+
         var user = await userRepository.GetByEmailAsync(request.Email);
 
         if (user is null)
