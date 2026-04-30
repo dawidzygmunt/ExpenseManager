@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{47DD0A96
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpensesManager.Api.UnitTest", "ExpensesManager.Api.UnitTest\ExpensesManager.Api.UnitTest.csproj", "{5CA7EB59-BE89-46CE-A7D8-308F9072C14C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpensesManager.Api.IntegrationTests", "ExpensesManager.Api.IntegrationTests\ExpensesManager.Api.IntegrationTests.csproj", "{C9E80D21-2C44-4DBC-BBE4-540D1A66B665}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,8 +45,13 @@ Global
 		{5CA7EB59-BE89-46CE-A7D8-308F9072C14C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CA7EB59-BE89-46CE-A7D8-308F9072C14C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CA7EB59-BE89-46CE-A7D8-308F9072C14C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9E80D21-2C44-4DBC-BBE4-540D1A66B665}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9E80D21-2C44-4DBC-BBE4-540D1A66B665}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9E80D21-2C44-4DBC-BBE4-540D1A66B665}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9E80D21-2C44-4DBC-BBE4-540D1A66B665}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5CA7EB59-BE89-46CE-A7D8-308F9072C14C} = {47DD0A96-BC64-4145-A1C3-8A4785FC3B87}
+		{C9E80D21-2C44-4DBC-BBE4-540D1A66B665} = {47DD0A96-BC64-4145-A1C3-8A4785FC3B87}
 	EndGlobalSection
 EndGlobal
