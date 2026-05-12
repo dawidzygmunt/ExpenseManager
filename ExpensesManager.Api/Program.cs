@@ -55,6 +55,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IBlackListRepository, BlackListRepository>();
+builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
 builder.Services.AddHostedService<JwtBlackListCleanupService>();
 
 

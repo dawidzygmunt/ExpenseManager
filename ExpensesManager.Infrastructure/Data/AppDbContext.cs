@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace ExpensesManager.Infrastructure.Data;
 
 public class AppDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
@@ -15,6 +14,7 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 
     // Each Db set is new table
     public DbSet<BlackListedToken> BlackListedTokens { get; set; }
+    public DbSet<Expense> Expenses { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -53,6 +53,19 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
             entity.HasKey(u => u.Id);
             entity.HasIndex(u => u.Jti).IsUnique();
             entity.Property(u => u.Expiry).IsRequired();
+        });
+
+        modelBuilder.Entity<Expense>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Description).IsRequired().HasMaxLength(500);
+            entity.Property(e => e.Amount).IsRequired().HasColumnType("decimal(18,2)");
+            entity.Property(e => e.GoalDeductionPercentage).HasColumnType("decimal(5,2)");
+            entity.Property(e => e.CreatedAt).IsRequired();
+            entity.Property(e => e.Notes).HasMaxLength(1000);
+            entity.Property(e => e.Type).HasConversion<string>();
+            entity.Property(e => e.Currency).HasConversion<string>();
+            entity.Property(e => e.PaymentMethod).HasConversion<string>();
         });
     }
 }
