@@ -3,6 +3,6 @@ using MediatR;
 
 namespace ExpensesManager.Application.Queries;
 
-public sealed record GetWorkspaceExpensesQuery(
+public sealed record GetExpensesByWorkspaceIdQuery(
     Guid UserId,
-    Guid WorkspaceId) : IRequest<ExpenseResponse>;
+    Guid WorkspaceId) : IRequest<IEnumerable<ExpenseResponse>>;

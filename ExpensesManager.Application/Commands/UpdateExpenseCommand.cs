@@ -6,7 +6,7 @@ namespace ExpensesManager.Application.Commands;
 
 public sealed record UpdateExpenseCommand(
     Guid Id,
-    double Amount,
+    decimal Amount,
     ExpenseType Type,
     string Description,
     DateTime Date,
@@ -17,5 +17,5 @@ public sealed record UpdateExpenseCommand(
     int? Period,
     DateTime? StartDate,
     Guid? FinancialGoalId,
-    double? GoalDeductionPercentage
+    decimal? GoalDeductionPercentage
 ) : IRequest<ExpenseResponse>;

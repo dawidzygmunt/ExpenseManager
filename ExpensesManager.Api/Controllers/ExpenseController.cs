@@ -1,10 +1,12 @@
 using ExpensesManager.Application.Commands;
 using ExpensesManager.Application.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExpensesManager.Api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/expense")]
 public class ExpenseController(IMediator mediator) : ControllerBase
@@ -20,7 +22,7 @@ public class ExpenseController(IMediator mediator) : ControllerBase
     [HttpGet("workspace/{workspaceId}")]
     public async Task<IActionResult> GetExpensesByWorkspaceId(Guid workspaceId, [FromQuery] Guid userId)
     {
-        var query = new GetAllExpensesQuery();
+        var query = new GetExpensesByWorkspaceIdQuery(workspaceId, userId);
         var response = await mediator.Send(query);
         return Ok(response);
     }

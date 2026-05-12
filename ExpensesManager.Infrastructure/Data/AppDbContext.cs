@@ -66,6 +66,8 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
             entity.Property(e => e.Type).HasConversion<string>();
             entity.Property(e => e.Currency).HasConversion<string>();
             entity.Property(e => e.PaymentMethod).HasConversion<string>();
+            entity.HasIndex(e => e.WorkspaceId);
+            entity.HasIndex(e => new { e.UserId, e.WorkspaceId });
         });
     }
 }
