@@ -8,17 +8,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\ExpensesManager.Application\ExpensesManager.Application.csproj" />
-        <ProjectReference Include="..\ExpensesManager.Infrastructure\ExpensesManager.Infrastructure.csproj" />
+        <ProjectReference Include="..\ExpensesManager.Application\ExpensesManager.Application.csproj"/>
+        <ProjectReference Include="..\ExpensesManager.Infrastructure\ExpensesManager.Infrastructure.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.5" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.2">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
-      <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.8"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.5"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.2">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7"/>
     </ItemGroup>
 
 </Project>

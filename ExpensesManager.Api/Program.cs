@@ -1,3 +1,5 @@
+using System.Text;
+using ExpensesManager.Api.Filters;
 using ExpensesManager.Api.Middleware;
 using ExpensesManager.Application.Handlers;
 using ExpensesManager.Application.Interfaces;
@@ -7,8 +9,10 @@ using ExpensesManager.Infrastructure.Data;
 using ExpensesManager.Infrastructure.Repositories;
 using ExpensesManager.Infrastructure.Services;
 using ExpensesManager.Infrastructure.Settings;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
@@ -58,7 +62,28 @@ builder.Services.AddScoped<IBlackListRepository, BlackListRepository>();
 builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
 builder.Services.AddHostedService<JwtBlackListCleanupService>();
 
+var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>()!;
+var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey));
 
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings.Issuer,
+            ValidAudience = jwtSettings.Audience,
+            IssuerSigningKey = signingKey,
+            ClockSkew = TimeSpan.Zero
+        };
+    });
+
+builder.Services.AddAuthorization();
+builder.Services.AddControllers(options => { options.Filters.Add<ApiResponseFilter>(); });
 builder.Services.AddSwaggerGen();
 
 
@@ -68,7 +93,12 @@ app.UseMiddleware<GlobalExceptionMiddleware>();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
 app.UseCors("AllowAll");
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseMiddleware<JwtBlacklistMiddleware>();
 
 app.MapControllers();

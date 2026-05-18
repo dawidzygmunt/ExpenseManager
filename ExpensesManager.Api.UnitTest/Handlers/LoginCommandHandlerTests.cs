@@ -84,7 +84,7 @@ public class LoginCommandHandlerTests
         var response = await _sut.Handle(request, CancellationToken.None);
 
         // Assert
-        Assert.Equal(mockedAccessToken, response.AccessToken);
+        Assert.Equal(mockedAccessToken, response.Token);
         Assert.Equal(mockedRefreshToken.Token, response.RefreshToken);
         Assert.Equal(mockedRefreshToken.ExpiryTime, response.RefreshTokenExpiryTime);
         _userRepository.Verify(x => x.GetRolesAsync(user), Times.Once);

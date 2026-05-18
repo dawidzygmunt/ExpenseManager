@@ -1,5 +1,7 @@
+using ExpensesManager.Api.Responses;
 using ExpensesManager.Application.Commands;
 using ExpensesManager.Application.Queries;
+using ExpensesManager.Application.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +22,8 @@ public class ExpenseController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("workspace/{workspaceId}")]
-    public async Task<IActionResult> GetExpensesByWorkspaceId(Guid workspaceId, [FromQuery] Guid userId)
+    public async Task<IActionResult> GetExpensesByWorkspaceId(
+        Guid workspaceId, [FromQuery] Guid userId)
     {
         var query = new GetExpensesByWorkspaceIdQuery(workspaceId, userId);
         var response = await mediator.Send(query);
@@ -36,14 +39,19 @@ public class ExpenseController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddExpense([FromBody] AddExpenseCommand command)
+    public async Task<IActionResult> AddExpense(
+        [FromBody] AddExpenseCommand command)
     {
         var response = await mediator.Send(command);
-        return CreatedAtAction(nameof(GetExpenseById), new { id = response.Id }, response);
+        return CreatedAtAction(
+            nameof(GetExpenseById),
+            new { id = response.Id },
+            ApiResponse<ExpenseResponse>.Ok(response, 201));
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateExpense(Guid id, [FromBody] UpdateExpenseCommand command)
+    public async Task<IActionResult> UpdateExpense(Guid id,
+        [FromBody] UpdateExpenseCommand command)
     {
         await mediator.Send(command with { Id = id });
         return NoContent();
