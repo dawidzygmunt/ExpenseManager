@@ -20,7 +20,7 @@ public class AuthController(IMediator mediator) : ControllerBase
         {
             HttpOnly = true,
             Secure = true,
-            SameSite = SameSiteMode.Strict,
+            SameSite = SameSiteMode.None,
             Expires = response.RefreshTokenExpiryTime
         });
 
@@ -46,5 +46,26 @@ public class AuthController(IMediator mediator) : ControllerBase
         Response.Cookies.Delete("refreshToken");
 
         return Ok(response);
+    }
+
+    [HttpPost("refresh")]
+    public async Task<IActionResult> Refresh()
+    {
+        if (!Request.Cookies.TryGetValue("refreshToken", out var refreshToken)
+            || string.IsNullOrWhiteSpace(refreshToken))
+            return Unauthorized();
+
+        var response = await mediator.Send(new RefreshTokenCommand(refreshToken));
+
+        Response.Cookies.Append("refreshToken", response.RefreshToken, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.None,
+            Expires = response.RefreshTokenExpiryTime,
+            Path = "/api/auth"
+        });
+
+        return Ok(new { response.Token, response.UserDto });
     }
 }

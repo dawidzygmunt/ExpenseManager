@@ -2,7 +2,6 @@ using ExpensesManager.Domain.Entities;
 using ExpensesManager.Domain.Interfaces;
 using ExpensesManager.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace ExpensesManager.Infrastructure.Repositories;
 
@@ -20,17 +19,13 @@ public class UserRepository(UserManager<User> userManager, AppDbContext context)
         {
             var result = await userManager.CreateAsync(user, password);
             if (!result.Succeeded)
-            {
                 throw new InvalidOperationException(string.Join(Environment.NewLine,
                     result.Errors.Select(e => e.Description)));
-            }
 
             var roleResult = await userManager.AddToRoleAsync(user, role);
             if (!roleResult.Succeeded)
-            {
                 throw new InvalidOperationException(string.Join(Environment.NewLine,
                     roleResult.Errors.Select(e => e.Description)));
-            }
 
             await transaction.CommitAsync();
             return user;
@@ -60,5 +55,10 @@ public class UserRepository(UserManager<User> userManager, AppDbContext context)
     public async Task RemoveFromRoleAsync(User user, string role)
     {
         await userManager.RemoveFromRoleAsync(user, role);
+    }
+
+    public Task<User?> GetByIdAsync(Guid id)
+    {
+        return userManager.FindByIdAsync(id.ToString());
     }
 }

@@ -15,6 +15,7 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     // Each Db set is new table
     public DbSet<BlackListedToken> BlackListedTokens { get; set; }
     public DbSet<Expense> Expenses { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -53,6 +54,17 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
             entity.HasKey(u => u.Id);
             entity.HasIndex(u => u.Jti).IsUnique();
             entity.Property(u => u.Expiry).IsRequired();
+        });
+
+        modelBuilder.Entity<RefreshToken>(entity =>
+        {
+            entity.HasKey(t => t.Id);
+            entity.HasIndex(t => t.Token).IsUnique();
+            entity.Property(t => t.Token).IsRequired();
+            entity.HasOne(t => t.User)
+                .WithMany()
+                .HasForeignKey(t => t.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<Expense>(entity =>

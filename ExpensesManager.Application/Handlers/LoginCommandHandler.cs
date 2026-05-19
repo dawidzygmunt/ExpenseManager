@@ -3,6 +3,7 @@ using ExpensesManager.Application.DTOs;
 using ExpensesManager.Application.Exceptions;
 using ExpensesManager.Application.Interfaces;
 using ExpensesManager.Application.Responses;
+using ExpensesManager.Domain.Entities;
 using ExpensesManager.Domain.Interfaces;
 using MediatR;
 
@@ -10,7 +11,8 @@ namespace ExpensesManager.Application.Handlers;
 
 public class LoginCommandHandler(
     IJwtService jwtService,
-    IUserRepository userRepository
+    IUserRepository userRepository,
+    IRefreshTokenRepository refreshTokenRepository
 ) : IRequestHandler<LoginCommand, LoginResponse>
 {
     public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -32,6 +34,13 @@ public class LoginCommandHandler(
         var roles = await userRepository.GetRolesAsync(user);
         var accessToken = jwtService.GenerateAccessToken(user, roles);
         var refreshToken = jwtService.GenerateRefreshToken();
+
+        await refreshTokenRepository.AddAsync(new RefreshToken
+        {
+            Token = refreshToken.Token,
+            ExpiryTime = refreshToken.ExpiryTime,
+            UserId = user.Id
+        });
 
 
         var userDto = new UserDto(
