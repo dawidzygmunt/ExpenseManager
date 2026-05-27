@@ -1,5 +1,6 @@
 using ExpensesManager.Api.DTO;
 using ExpensesManager.Application.Commands;
+using ExpensesManager.Application.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using LoginRequest = ExpensesManager.Api.DTO.LoginRequest;
@@ -16,11 +17,12 @@ public class AuthController(IMediator mediator) : ControllerBase
         var command = new LoginCommand(request.Email, request.Password);
         var response = await mediator.Send(command);
 
+        var isDev = !Request.IsHttps;
         Response.Cookies.Append("refreshToken", response.RefreshToken, new CookieOptions
         {
             HttpOnly = true,
-            Secure = true,
-            SameSite = SameSiteMode.None,
+            Secure = !isDev,
+            SameSite = isDev ? SameSiteMode.Lax : SameSiteMode.None,
             Expires = response.RefreshTokenExpiryTime
         });
 
@@ -56,16 +58,22 @@ public class AuthController(IMediator mediator) : ControllerBase
             return Unauthorized();
 
         var response = await mediator.Send(new RefreshTokenCommand(refreshToken));
+        var isDev = !Request.IsHttps;
 
         Response.Cookies.Append("refreshToken", response.RefreshToken, new CookieOptions
         {
             HttpOnly = true,
-            Secure = true,
-            SameSite = SameSiteMode.None,
+            Secure = !isDev,
+            SameSite = isDev ? SameSiteMode.Lax : SameSiteMode.None,
             Expires = response.RefreshTokenExpiryTime,
             Path = "/api/auth"
         });
 
-        return Ok(new { response.Token, response.UserDto });
+        // return Ok(new { response.Token, response.UserDto });
+        return Ok(new RefreshTokenResponseDto(
+            response.Token,
+            response.RefreshToken,
+            response.RefreshTokenExpiryTime
+        ));
     }
 }

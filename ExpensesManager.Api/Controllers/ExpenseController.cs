@@ -1,7 +1,7 @@
 using ExpensesManager.Api.Responses;
 using ExpensesManager.Application.Commands;
 using ExpensesManager.Application.Queries;
-using ExpensesManager.Application.Responses;
+using ExpensesManager.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -46,7 +46,7 @@ public class ExpenseController(IMediator mediator) : ControllerBase
         return CreatedAtAction(
             nameof(GetExpenseById),
             new { id = response.Id },
-            ApiResponse<ExpenseResponse>.Ok(response, 201));
+            ApiResponse<Expense>.Ok(response, 201));
     }
 
     [HttpPut("{id}")]

@@ -1,5 +1,4 @@
 using ExpensesManager.Application.Commands;
-using ExpensesManager.Application.Responses;
 using ExpensesManager.Domain.Entities;
 using ExpensesManager.Domain.Interfaces;
 using MediatR;
@@ -7,9 +6,9 @@ using MediatR;
 namespace ExpensesManager.Application.Handlers;
 
 public class AddExpenseCommandHandler(IExpenseRepository expenseRepository)
-    : IRequestHandler<AddExpenseCommand, ExpenseResponse>
+    : IRequestHandler<AddExpenseCommand, Expense>
 {
-    public async Task<ExpenseResponse> Handle(
+    public async Task<Expense> Handle(
         AddExpenseCommand request,
         CancellationToken cancellationToken)
     {
@@ -33,26 +32,6 @@ public class AddExpenseCommandHandler(IExpenseRepository expenseRepository)
         };
 
         var saved = await expenseRepository.AddAsync(expense);
-        return new ExpenseResponse(
-            saved.Id,
-            saved.Amount,
-            saved.Type,
-            saved.Description,
-            saved.Date,
-            saved.PaymentMethod,
-            saved.Notes,
-            saved.Currency,
-            saved.IsPeriodic,
-            saved.Period,
-            saved.StartDate,
-            saved.LastProcessedDate,
-            saved.ParentExpenseId,
-            saved.WorkspaceId,
-            saved.UserId,
-            saved.CreatedAt,
-            saved.UpdatedAt,
-            saved.FinancialGoalId,
-            saved.GoalDeductionPercentage
-        );
+        return saved;
     }
 }

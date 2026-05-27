@@ -1,4 +1,3 @@
-using ExpensesManager.Application.Responses;
 using ExpensesManager.Domain.Entities;
 using MediatR;
 
@@ -17,4 +16,4 @@ public sealed record AddExpenseCommand(
     DateTime? StartDate,
     Guid WorkspaceId,
     Guid UserId
-) : IRequest<ExpenseResponse>;
+) : IRequest<Expense>;
