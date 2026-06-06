@@ -1,5 +1,5 @@
 using ExpensesManager.Application.Commands;
-using ExpensesManager.Domain.Interfaces;
+using ExpensesManager.Application.Interfaces;
 using MediatR;
 
 namespace ExpensesManager.Application.Handlers;

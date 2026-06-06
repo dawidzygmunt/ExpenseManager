@@ -1,11 +1,11 @@
 using ExpensesManager.Application.Commands;
+using ExpensesManager.Application.Interfaces;
 using ExpensesManager.Domain.Entities;
-using ExpensesManager.Domain.Interfaces;
 using MediatR;
 
 namespace ExpensesManager.Application.Handlers;
 
-public class AddExpenseCommandHandler(IExpenseRepository expenseRepository)
+public class AddExpenseCommandHandler(IExpenseRepository expenseRepository, IUnitOfWork unitOfWork)
     : IRequestHandler<AddExpenseCommand, Expense>
 {
     public async Task<Expense> Handle(
@@ -32,6 +32,7 @@ public class AddExpenseCommandHandler(IExpenseRepository expenseRepository)
         };
 
         var saved = await expenseRepository.AddAsync(expense);
+        await unitOfWork.SaveChangesAsync();
         return saved;
     }
 }

@@ -1,6 +1,6 @@
+using ExpensesManager.Application.Interfaces;
 using ExpensesManager.Application.Queries;
 using ExpensesManager.Application.Responses;
-using ExpensesManager.Domain.Interfaces;
 using MediatR;
 
 namespace ExpensesManager.Application.Handlers;

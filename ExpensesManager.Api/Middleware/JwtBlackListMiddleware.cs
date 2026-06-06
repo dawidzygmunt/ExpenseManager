@@ -1,6 +1,5 @@
 using ExpensesManager.Api.Responses;
 using ExpensesManager.Application.Interfaces;
-using ExpensesManager.Domain.Interfaces;
 
 namespace ExpensesManager.Api.Middleware;
 

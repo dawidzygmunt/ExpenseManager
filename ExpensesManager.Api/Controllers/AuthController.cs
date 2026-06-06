@@ -1,6 +1,5 @@
 using ExpensesManager.Api.DTO;
 using ExpensesManager.Application.Commands;
-using ExpensesManager.Application.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using LoginRequest = ExpensesManager.Api.DTO.LoginRequest;
@@ -69,11 +68,6 @@ public class AuthController(IMediator mediator) : ControllerBase
             Path = "/api/auth"
         });
 
-        // return Ok(new { response.Token, response.UserDto });
-        return Ok(new RefreshTokenResponseDto(
-            response.Token,
-            response.RefreshToken,
-            response.RefreshTokenExpiryTime
-        ));
+        return Ok(new { response.Token, response.UserDto });
     }
 }

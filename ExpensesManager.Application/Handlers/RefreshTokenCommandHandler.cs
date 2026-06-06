@@ -4,7 +4,6 @@ using ExpensesManager.Application.Exceptions;
 using ExpensesManager.Application.Interfaces;
 using ExpensesManager.Application.Responses;
 using ExpensesManager.Domain.Entities;
-using ExpensesManager.Domain.Interfaces;
 using MediatR;
 
 namespace ExpensesManager.Application.Handlers;

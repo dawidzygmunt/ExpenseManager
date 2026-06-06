@@ -1,6 +1,6 @@
 using ExpensesManager.Domain.Entities;
 
-namespace ExpensesManager.Domain.Interfaces;
+namespace ExpensesManager.Application.Interfaces;
 
 public interface IUserRepository
 {

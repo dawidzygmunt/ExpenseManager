@@ -1,5 +1,5 @@
+using ExpensesManager.Application.Interfaces;
 using ExpensesManager.Domain.Entities;
-using ExpensesManager.Domain.Interfaces;
 using ExpensesManager.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,14 +25,12 @@ public class ExpenseRepository(AppDbContext dbContext) : IExpenseRepository
     public async Task<Expense> AddAsync(Expense expense)
     {
         await dbContext.Expenses.AddAsync(expense);
-        await dbContext.SaveChangesAsync();
         return expense;
     }
 
-    public async Task UpdateAsync(Expense expense)
+    public void Update(Expense expense)
     {
         dbContext.Expenses.Update(expense);
-        await dbContext.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(Guid id)

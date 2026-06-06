@@ -1,11 +1,10 @@
-using ExpensesManager.Domain.Interfaces;
+using ExpensesManager.Application.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-
 namespace ExpensesManager.Infrastructure.Services;
 
-public class JwtBlackListCleanupService(IServiceScopeFactory scopeFactory): BackgroundService
+public class JwtBlackListCleanupService(IServiceScopeFactory scopeFactory) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -16,7 +15,7 @@ public class JwtBlackListCleanupService(IServiceScopeFactory scopeFactory): Back
                 var repo = scope.ServiceProvider.GetRequiredService<IBlackListRepository>();
                 await repo.RemoveExpiredAsync();
             }
-            
+
             await Task.Delay(TimeSpan.FromHours(1), stoppingToken);
         }
     }

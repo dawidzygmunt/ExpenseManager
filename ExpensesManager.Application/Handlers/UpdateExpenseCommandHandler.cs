@@ -1,11 +1,11 @@
 using ExpensesManager.Application.Commands;
+using ExpensesManager.Application.Interfaces;
 using ExpensesManager.Application.Responses;
-using ExpensesManager.Domain.Interfaces;
 using MediatR;
 
 namespace ExpensesManager.Application.Handlers;
 
-public class UpdateExpenseCommandHandler(IExpenseRepository expenseRepository)
+public class UpdateExpenseCommandHandler(IExpenseRepository expenseRepository, IUnitOfWork unitOfWork)
     : IRequestHandler<UpdateExpenseCommand, ExpenseResponse>
 {
     public async Task<ExpenseResponse> Handle(
@@ -29,7 +29,9 @@ public class UpdateExpenseCommandHandler(IExpenseRepository expenseRepository)
         expense.GoalDeductionPercentage = request.GoalDeductionPercentage;
         expense.UpdatedAt = DateTime.UtcNow;
 
-        await expenseRepository.UpdateAsync(expense);
+        expenseRepository.Update(expense);
+        await unitOfWork.SaveChangesAsync();
+
 
         return new ExpenseResponse(
             expense.Id,

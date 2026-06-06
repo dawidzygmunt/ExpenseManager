@@ -4,7 +4,6 @@ using ExpensesManager.Api.Middleware;
 using ExpensesManager.Application.Handlers;
 using ExpensesManager.Application.Interfaces;
 using ExpensesManager.Domain.Entities;
-using ExpensesManager.Domain.Interfaces;
 using ExpensesManager.Infrastructure.Data;
 using ExpensesManager.Infrastructure.Repositories;
 using ExpensesManager.Infrastructure.Services;
@@ -62,6 +61,7 @@ builder.Services.AddScoped<IBlackListRepository, BlackListRepository>();
 builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
 builder.Services.AddHostedService<JwtBlackListCleanupService>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>()!;
 var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey));
@@ -112,6 +112,9 @@ using (var scope = app.Services.CreateScope())
 
 app.Run();
 
-public partial class Program
+namespace ExpensesManager.Api
 {
+    public class Program
+    {
+    }
 }
