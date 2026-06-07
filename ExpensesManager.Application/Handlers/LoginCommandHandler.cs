@@ -11,7 +11,8 @@ namespace ExpensesManager.Application.Handlers;
 public class LoginCommandHandler(
     IJwtService jwtService,
     IUserRepository userRepository,
-    IRefreshTokenRepository refreshTokenRepository
+    IRefreshTokenRepository refreshTokenRepository,
+    IUnitOfWork unitOfWork
 ) : IRequestHandler<LoginCommand, LoginResponse>
 {
     public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -40,6 +41,7 @@ public class LoginCommandHandler(
             ExpiryTime = refreshToken.ExpiryTime,
             UserId = user.Id
         });
+        await unitOfWork.SaveChangesAsync();
 
 
         var userDto = new UserDto(
