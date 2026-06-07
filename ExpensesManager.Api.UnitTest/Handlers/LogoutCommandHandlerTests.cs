@@ -1,4 +1,5 @@
 using ExpensesManager.Application.Commands;
+using ExpensesManager.Application.Exceptions;
 using ExpensesManager.Application.Handlers;
 using ExpensesManager.Application.Interfaces;
 using ExpensesManager.Domain.Entities;
@@ -11,11 +12,12 @@ public class LogoutCommandHandlerTests
 {
     private readonly Mock<IBlackListRepository> _blackListRepository = new();
     private readonly Mock<IJwtService> _jwtService = new();
+    private readonly Mock<IUnitOfWork> _unitOfWork = new();
     private readonly LogoutCommandHandler _sut;
 
     public LogoutCommandHandlerTests()
     {
-        _sut = new LogoutCommandHandler(_blackListRepository.Object, _jwtService.Object);
+        _sut = new LogoutCommandHandler(_blackListRepository.Object, _jwtService.Object, _unitOfWork.Object);
     }
 
     [Fact]
@@ -29,7 +31,7 @@ public class LogoutCommandHandlerTests
         _blackListRepository.Setup(x => x.IsBlacklistedAsync(decoded.jti)).ReturnsAsync(true);
 
         // Act & Assert
-        var ex = await Assert.ThrowsAsync<Exception>(() => _sut.Handle(request, CancellationToken.None));
+        var ex = await Assert.ThrowsAsync<ConflictException>(() => _sut.Handle(request, CancellationToken.None));
         Assert.Equal("Access Token is already on the black list", ex.Message);
         _blackListRepository.Verify(x => x.AddAsync(It.IsAny<BlackListedToken>()), Times.Never);
     }

@@ -9,11 +9,12 @@ namespace ExpensesManager.Api.UnitTest.Handlers;
 public class AddExpenseCommandHandlerTests
 {
     private readonly Mock<IExpenseRepository> _expenseRepository = new();
+    private readonly Mock<IUnitOfWork> _unitOfWork = new();
     private readonly AddExpenseCommandHandler _sut;
 
     public AddExpenseCommandHandlerTests()
     {
-        _sut = new AddExpenseCommandHandler(_expenseRepository.Object);
+        _sut = new AddExpenseCommandHandler(_expenseRepository.Object, _unitOfWork.Object);
     }
 
     [Fact]

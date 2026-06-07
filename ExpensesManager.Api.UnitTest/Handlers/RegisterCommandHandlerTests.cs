@@ -1,4 +1,5 @@
 using ExpensesManager.Application.Commands;
+using ExpensesManager.Application.Exceptions;
 using ExpensesManager.Application.Handlers;
 using ExpensesManager.Application.Interfaces;
 using ExpensesManager.Domain.Entities;
@@ -77,7 +78,7 @@ public class RegisterCommandHandlerTests
 
         // Act & Assert
         var exception =
-            await Assert.ThrowsAsync<Exception>(() => _sut.Handle(request, CancellationToken.None));
+            await Assert.ThrowsAsync<ConflictException>(() => _sut.Handle(request, CancellationToken.None));
 
         Assert.Equal("User with this email already exists", exception.Message);
 

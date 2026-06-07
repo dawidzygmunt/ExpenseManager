@@ -6,7 +6,7 @@ using ExpensesManager.Domain.Entities;
 
 namespace ExpensesManager.Api.IntegrationTests.Controllers;
 
-public class ExpenseControllerTest : IClassFixture<PostgresContainerFixture>
+public class ExpenseControllerTest : IClassFixture<PostgresContainerFixture>, IAsyncLifetime
 {
     private readonly HttpClient _client;
 
@@ -15,6 +15,10 @@ public class ExpenseControllerTest : IClassFixture<PostgresContainerFixture>
         var factory = new CustomWebApplicationFactory(postgresContainerFixture);
         _client = factory.CreateClient();
     }
+
+    public Task InitializeAsync() => _client.AuthenticateAsync();
+
+    public Task DisposeAsync() => Task.CompletedTask;
 
     [Fact]
     public async Task ExpenseController_AddExpense_ReturnsCreated()
@@ -65,7 +69,7 @@ public class ExpenseControllerTest : IClassFixture<PostgresContainerFixture>
 
         // Act
         var response = await _client.PostAsJsonAsync("/api/expense", command);
-        var body = await response.Content.ReadFromJsonAsync<ExpenseResponse>();
+        var body = await response.ReadApiDataAsync<ExpenseResponse>();
 
         // Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -124,10 +128,10 @@ public class ExpenseControllerTest : IClassFixture<PostgresContainerFixture>
         );
 
         var postResponse = await _client.PostAsJsonAsync("/api/expense", command);
-        var created = await postResponse.Content.ReadFromJsonAsync<ExpenseResponse>();
+        var created = await postResponse.ReadApiDataAsync<ExpenseResponse>();
 
         // Act
-        var response = await _client.GetAsync($"/api/expense/{created!.Id}");
+        var response = await _client.GetAsync($"/api/expense/{created.Id}");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -153,11 +157,11 @@ public class ExpenseControllerTest : IClassFixture<PostgresContainerFixture>
         );
 
         var postResponse = await _client.PostAsJsonAsync("/api/expense", command);
-        var created = await postResponse.Content.ReadFromJsonAsync<ExpenseResponse>();
+        var created = await postResponse.ReadApiDataAsync<ExpenseResponse>();
 
         // Act
-        var response = await _client.GetAsync($"/api/expense/{created!.Id}");
-        var body = await response.Content.ReadFromJsonAsync<ExpenseResponse>();
+        var response = await _client.GetAsync($"/api/expense/{created.Id}");
+        var body = await response.ReadApiDataAsync<ExpenseResponse>();
 
         // Assert
         Assert.NotNull(body);
@@ -167,7 +171,7 @@ public class ExpenseControllerTest : IClassFixture<PostgresContainerFixture>
     }
 
     [Fact]
-    public async Task ExpenseController_DeleteExpense_AfterAdd_ReturnsNoContent()
+    public async Task ExpenseController_DeleteExpense_AfterAdd_ReturnsOk()
     {
         // Arrange
         var command = new AddExpenseCommand(
@@ -186,13 +190,14 @@ public class ExpenseControllerTest : IClassFixture<PostgresContainerFixture>
         );
 
         var postResponse = await _client.PostAsJsonAsync("/api/expense", command);
-        var created = await postResponse.Content.ReadFromJsonAsync<ExpenseResponse>();
+        var created = await postResponse.ReadApiDataAsync<ExpenseResponse>();
 
         // Act
-        var response = await _client.DeleteAsync($"/api/expense/{created!.Id}");
+        var response = await _client.DeleteAsync($"/api/expense/{created.Id}");
 
         // Assert
-        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        // ApiResponseFilter rewrites 204 NoContent into a wrapped 200 OK response.
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
     [Fact]
