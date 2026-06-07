@@ -24,16 +24,14 @@ public class GlobalExceptionMiddleware(
     {
         var response = exception switch
         {
-            AppException appException => ApiResponse.Failure(appException.StatusCode, appException.Errors),
-            UnauthorizedAccessException => ApiResponse.Failure(StatusCodes.Status401Unauthorized,
-                exception.Message),
-            ArgumentException => ApiResponse.Failure(StatusCodes.Status400BadRequest, exception.Message),
-            InvalidOperationException => ApiResponse.Failure(StatusCodes.Status400BadRequest,
-                exception.Message),
+            AppException appException => Fail(appException.StatusCode, appException.Errors),
+            UnauthorizedAccessException => Fail(StatusCodes.Status401Unauthorized, exception.Message),
+            ArgumentException => Fail(StatusCodes.Status400BadRequest, exception.Message),
+            InvalidOperationException => Fail(StatusCodes.Status400BadRequest, exception.Message),
             _ => BuildUnhandledResponse(exception)
         };
 
-        if (response.StatusCode >= StatusCodes.Status500InternalServerError)
+        if (response.Status >= StatusCodes.Status500InternalServerError)
             logger.LogError(exception, "Unhandled exception while processing {Method} {Path}",
                 context.Request.Method, context.Request.Path);
         else
@@ -41,16 +39,28 @@ public class GlobalExceptionMiddleware(
                 context.Request.Method, context.Request.Path);
 
         context.Response.Clear();
-        context.Response.StatusCode = response.StatusCode;
+        context.Response.StatusCode = response.Status;
         context.Response.ContentType = "application/json";
         return context.Response.WriteAsJsonAsync(response);
     }
 
-    private ApiResponse BuildUnhandledResponse(Exception exception)
+    private ApiResponse<object> BuildUnhandledResponse(Exception exception)
     {
         var message = environment.IsDevelopment()
             ? exception.Message
             : "An unexpected error occurred.";
-        return ApiResponse.Failure(StatusCodes.Status500InternalServerError, message);
+        return Fail(StatusCodes.Status500InternalServerError, message);
+    }
+
+    private static ApiResponse<object> Fail(int status, string message)
+    {
+        return new ApiResponse<object>(false, null, status, message,
+            new[] { new ApiError(null, message, null) });
+    }
+
+    private static ApiResponse<object> Fail(int status, IEnumerable<string> errors)
+    {
+        var list = errors.Select(e => new ApiError(null, e, null)).ToList();
+        return new ApiResponse<object>(false, null, status, list.FirstOrDefault()?.Message, list);
     }
 }

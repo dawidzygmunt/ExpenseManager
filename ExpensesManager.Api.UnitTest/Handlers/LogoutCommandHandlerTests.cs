@@ -2,7 +2,6 @@ using ExpensesManager.Application.Commands;
 using ExpensesManager.Application.Handlers;
 using ExpensesManager.Application.Interfaces;
 using ExpensesManager.Domain.Entities;
-using ExpensesManager.Domain.Interfaces;
 using MediatR;
 using Moq;
 
