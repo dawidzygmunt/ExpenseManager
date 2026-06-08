@@ -1,4 +1,5 @@
 using ExpensesManager.Application.Commands;
+using ExpensesManager.Application.Factories;
 using ExpensesManager.Application.Handlers;
 using ExpensesManager.Application.Interfaces;
 using ExpensesManager.Domain.Entities;
@@ -14,7 +15,10 @@ public class AddExpenseCommandHandlerTests
 
     public AddExpenseCommandHandlerTests()
     {
-        _sut = new AddExpenseCommandHandler(_expenseRepository.Object, _unitOfWork.Object);
+        _sut = new AddExpenseCommandHandler(
+            _expenseRepository.Object,
+            _unitOfWork.Object,
+            new ExpenseFactory());
     }
 
     [Fact]
