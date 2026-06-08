@@ -1,6 +1,7 @@
 using System.Text;
 using ExpensesManager.Api.Filters;
 using ExpensesManager.Api.Middleware;
+using ExpensesManager.Application.Factories;
 using ExpensesManager.Application.Handlers;
 using ExpensesManager.Application.Interfaces;
 using ExpensesManager.Domain.Entities;
@@ -62,6 +63,7 @@ builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
 builder.Services.AddHostedService<JwtBlackListCleanupService>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IExpenseFactory, ExpenseFactory>();
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>()!;
 var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey));

@@ -11,13 +11,14 @@ public class LoginCommandHandlerTests
 {
     private readonly Mock<IJwtService> _jwtService = new();
     private readonly Mock<IRefreshTokenRepository> _refreshTokenRepository = new();
+    private readonly Mock<IUnitOfWork> _unitOfWork = new();
     private readonly LoginCommandHandler _sut;
     private readonly Mock<IUserRepository> _userRepository = new();
 
     public LoginCommandHandlerTests()
     {
         _sut = new LoginCommandHandler(_jwtService.Object, _userRepository.Object,
-            _refreshTokenRepository.Object);
+            _refreshTokenRepository.Object, _unitOfWork.Object);
     }
 
     [Fact]

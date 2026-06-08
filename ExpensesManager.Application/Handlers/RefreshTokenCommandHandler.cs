@@ -11,7 +11,8 @@ namespace ExpensesManager.Application.Handlers;
 public class RefreshTokenCommandHandler(
     IJwtService jwtService,
     IUserRepository userRepository,
-    IRefreshTokenRepository refreshTokenRepository
+    IRefreshTokenRepository refreshTokenRepository,
+    IUnitOfWork unitOfWork
 ) : IRequestHandler<RefreshTokenCommand, LoginResponse>
 {
     public async Task<LoginResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
@@ -27,7 +28,7 @@ public class RefreshTokenCommandHandler(
 
         // rotacja: stary unieważniamy, generujemy nowy
         stored.RevokedAt = DateTime.UtcNow;
-        await refreshTokenRepository.UpdateAsync(stored);
+        refreshTokenRepository.Update(stored);
 
         var user = await userRepository.GetByIdAsync(stored.UserId)
                    ?? throw new UnauthorizedException("User not found");
@@ -42,6 +43,7 @@ public class RefreshTokenCommandHandler(
             ExpiryTime = newRefresh.ExpiryTime,
             UserId = user.Id
         });
+        await unitOfWork.SaveChangesAsync();
 
         var userDto = new UserDto(user.Id, user.Email, user.FirstName, user.LastName);
         return new LoginResponse(newAccess, newRefresh.Token, newRefresh.ExpiryTime, userDto);
